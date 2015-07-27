@@ -13,7 +13,7 @@
   "autoload": {
     "psr-4": {
       "Alter\\Common\\": "src/",
-      "Alter\\Common\\Util": "src/util/"
+      "Alter\\Common\\Util\\": "src/util/"
     }
   }
 }
