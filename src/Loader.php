@@ -12,14 +12,13 @@ class Loader
 
 	private $app;
 	private $folders;
+	private $handlers = [];
 
 	function __construct($app, $folders = ['model', 'controller', 'view', 'option'])
 	{
 		if(!empty($folders)) $this->folders = $folders;
 		$this->app = $app;
-		$this->rw = new RegisterMetabox();
 		$this->load();
-		$this->rw->register();
 	}
 
 	private function load()
@@ -33,14 +32,6 @@ class Loader
 					$this->loadFile($file);
 				endif;
 			}
-		}
-
-		if(empty($this->app->post)){
-			$this->loadFile(ALTER . '/src/core/default/PostModel.php');
-		}
-
-		if(empty($this->app->page)){
-			$this->loadFile(ALTER . '/src/core/default/PageModel.php');
 		}
 
 	}
@@ -61,20 +52,20 @@ class Loader
 
 			$instance = new $name;
 
-			// Register the meta-boxes if is a model
-			if (is_subclass_of($instance, 'AppModel')) {
-				$this->app->registerModel($instance);
-				$this->rw->add($instance->getPostType(), $instance->getFields());
-			}
-
-			if (is_subclass_of($instance, 'OptionPage')) {
-				$this->app->registerOption($instance);
+			foreach($this->handlers as $type => $callback) {
+				if (is_subclass_of($instance, $type)) {
+					$callback($this->app);
+				}
 			}
 
 		}catch(InvalidArgumentException $e){
 			trigger_error($e->getMessage(), E_USER_WARNING);
 		}
 
+	}
+
+	public function handle($type, $callback) {
+		array_push($this->handlers, [$type => $callback]);
 	}
 
 }
