@@ -54,7 +54,7 @@ class Loader
 
 			foreach($this->handlers as $type => $callback) {
 				if (is_subclass_of($instance, $type)) {
-					$callback($this->app);
+					$callback($this->app, $instance);
 				}
 			}
 
