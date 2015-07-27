@@ -11,8 +11,9 @@
   "minimum-stability": "dev",
   "require": {},
   "autoload": {
-    "psr-0": {
-      "Alter\\Common": "src/"
+    "psr-4": {
+      "Alter\\Common\\": "src/",
+      "Alter\\Common\\Util": "src/util/",
     }
   }
 }
