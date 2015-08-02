@@ -18,10 +18,9 @@ class Loader
 	{
 		if(!empty($folders)) $this->folders = $folders;
 		$this->app = $app;
-		$this->load();
 	}
 
-	private function load()
+	protected function load()
 	{
 
 		// User Models, Views and Controllers
@@ -36,7 +35,7 @@ class Loader
 
 	}
 
-	private function loadFile($file){
+	protected function loadFile($file){
 
 		try{
 
@@ -47,14 +46,13 @@ class Loader
 			require $file;
 
 			if(!class_exists($name)){
-				throw new InvalidArgumentException("The class " . $name ." cannot be found, please check if the file and class name is correct");
+				throw new \InvalidArgumentException("The class " . $name ." cannot be found, please check if the file and class name is correct");
 			}
 
 			$instance = new $name;
-
-			foreach($this->handlers as $type => $callback) {
-				if (is_subclass_of($instance, $type)) {
-					$callback($this->app, $instance);
+			foreach($this->handlers as $handler) {
+				if (is_subclass_of($instance, $handler['type'])) {
+					 $handler['callback']($this->app, $instance);
 				}
 			}
 
@@ -65,7 +63,7 @@ class Loader
 	}
 
 	public function handle($type, $callback) {
-		array_push($this->handlers, [$type => $callback]);
+		array_push($this->handlers, ['type'=>$type, 'callback'=>$callback]);
 	}
 
 }
