@@ -43,7 +43,7 @@ class Loader
 			$name_arr = explode('/', $name);
 			$name = $name_arr[count($name_arr) - 1];
 
-			require $file;
+			require_once $file;
 
 			if(!class_exists($name)){
 				throw new \InvalidArgumentException("The class " . $name ." cannot be found, please check if the file and class name is correct");
