@@ -9,11 +9,15 @@
     }
   ],
   "minimum-stability": "stable",
-  "require": {},
+  "require": {
+    "xamin/handlebars.php": "@dev",
+    "symfony/console": "^2.7"
+  },
   "autoload": {
     "psr-4": {
       "Alter\\Common\\": "src/",
-      "Alter\\Common\\Util\\": "src/util/"
+      "Alter\\Common\\Util\\": "src/util/",
+      "Alter\\Common\\Console\\": "src/console/"
     }
   }
 }
